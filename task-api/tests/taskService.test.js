@@ -134,12 +134,12 @@ describe('getByStatus', () => {
     expect(result[0].title).toBe('a');
   });
 
-  // observation: uses .includes() not === so partial strings match
-  // this is a bug - "tod" would match "todo"
-  it('bug: partial status string still matches due to .includes()', () => {
+  // was a bug - .includes() matched partial strings like "tod" matching "todo"
+  // fixed: changed to === so only exact status strings match now
+  it('partial status string should not match any tasks', () => {
     taskService.create({ title: 'a', status: 'todo' });
     const result = taskService.getByStatus('tod');
-    expect(result).toHaveLength(1); // this passes but it shouldnt
+    expect(result).toHaveLength(0); // no match, exact only
   });
 });
 

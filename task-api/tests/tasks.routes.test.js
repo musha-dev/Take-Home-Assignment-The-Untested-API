@@ -56,11 +56,12 @@ describe('GET /tasks?status=', () => {
     expect(res.body).toEqual([]); // no error, just empty - worth knowing
   });
 
-  // observation: getByStatus uses .includes() not === so partial strings match
-  it('bug: partial status string matches tasks', async () => {
+  // was a bug - .includes() matched partial strings
+  // fixed: now uses === so this returns empty
+  it('partial status string should not match any tasks', async () => {
     await request(app).post('/tasks').send({ title: 'a task', status: 'todo' });
     const res = await request(app).get('/tasks?status=tod');
-    expect(res.body).toHaveLength(1); // shouldnt match but it does
+    expect(res.body).toHaveLength(0); // no match after fix
   });
 });
 
